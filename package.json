@@ -1,0 +1,14 @@
+{
+  "name": "bustime1",
+  "version": "0.0.1",
+  "description": "Map real-time locations of NYC buses near you",
+  "main": "app.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "author": "dorothym",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
