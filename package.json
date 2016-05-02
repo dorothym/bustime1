@@ -9,6 +9,7 @@
   "author": "dorothym",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "nodemon": "^1.9.2"
   }
 }
