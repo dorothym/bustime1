@@ -1,19 +1,9 @@
-'use strict';
-// var Promise = require('bluebird');
 var express = require('express'),
-	chalk = require('chalk'),
-	path = require('path'),
 	request = require('request'),
 	handlebars = require('handlebars');
 
 var MTA_BUSTIME_KEY = require(path.join(__dirname, './config.js')).MTA_BUSTIME_KEY;
 var app = express();
-
-var PORT = process.env.PORT || 1337;
-
-app.listen(PORT, function () {
-    console.log(chalk.blue('Server started on port', PORT));
-});
 
 var pathToGet = 'http://bustime.mta.info/api/where/stops-for-location.json?lat=40.748433&lon=-73.985656&latSpan=0.005&lonSpan=0.005&key=' + MTA_BUSTIME_KEY;
 
@@ -53,13 +43,6 @@ app.get('/stops2', function(req,res) {
 		}
 	});
 })
-
-var kvArray = [{key:1, value:10}, {key:2, value:20}, {key:3, value: 30}];
-var reformattedArray = kvArray.map(function(obj){ 
-		var rObj = {};
-		rObj[obj.key] = obj.value;
-		return rObj;
-});
 
 app.get('/stops3', function(req,res) {
 

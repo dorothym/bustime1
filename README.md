@@ -6,7 +6,7 @@ Allow a user to enter a geographical location and view nearby ALL nearby real-ti
 ## Dependencies and requirements
 This application requires an internet connection and depends on data from [MTA Bus Time](http://bustime.mta.info/wiki/Developers/Index).
 
-To run this application locally, you must [request a BusTime key from the MTA](http://spreadsheets.google.com/viewform?hl=en&formkey=dG9kcGIxRFpSS0NhQWM4UjA0V0VkNGc6MQ#gid=0) and export it from your `.bash_profile`:
+This application is not deployed yet. To run it locally, you must [request a BusTime key from the MTA](http://spreadsheets.google.com/viewform?hl=en&formkey=dG9kcGIxRFpSS0NhQWM4UjA0V0VkNGc6MQ#gid=0) and export it from your `.bash_profile`:
 
 ```
 export MTA_BUSTIME_KEY='[your key here]'

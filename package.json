@@ -9,9 +9,11 @@
   },
   "author": "dorothym",
   "license": "MIT",
+  "reponsitory" : "https://github.com/dorothym/bustime1.git",
   "dependencies": {
     "chalk": "^1.1.3",
     "express": "^4.13.4",
+    "handlebars": "^4.0.5",
     "nodemon": "^1.9.2",
     "request": "^2.72.0"
   }
