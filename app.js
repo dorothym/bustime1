@@ -4,7 +4,8 @@ var express = require('express'),
 	chalk = require('chalk'),
 	request = require('request'),
 	handlebars = require('handlebars'),
-	morgan = require('morgan');
+	morgan = require('morgan'),
+	hbs = require('hbs');
 
 var app = express();
 
@@ -12,10 +13,16 @@ var PORT = process.env.PORT || 1337;
 
 app.use(morgan('dev'));
 
+app.set('views', __dirname + '/views');
+
+app.set('view engine', 'hbs');
+
+// app.engine('html', swig.renderFile);
+
 app.use('/', require('./routes.js'));
 
 app.use(function (err, req, res, next) {
-  res.status(err.status).send('<h1>Error</h1>', { error: err });
+  res.status(err.status).send('<h1>Error</h1>', err.message);
 });
 
 app.use(function (req,res) {

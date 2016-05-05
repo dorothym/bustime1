@@ -68,9 +68,11 @@ app.get('/stops3', function(req,res) {
 
 app.get('/stops4', function (req,res) {
 
+	res.render('test', {
+		stops: {code: '123', name: 'abc'}
+	});
 	
-
-})
+});
 
 
 module.exports = app;

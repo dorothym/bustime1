@@ -1,9 +1,8 @@
 var geocoder, 
 	map,
-	GOOGLE_MAPS_API_KEY = 'AIzaSyDDDW__-3OYqcUy9TH3YQGeA3d2rmFmmwk',
-	address = '193 School Street, Oyster Bay, New York';
+	GOOGLE_MAPS_API_KEY = 'AIzaSyDDDW__-3OYqcUy9TH3YQGeA3d2rmFmmwk';
 
-function returnLatLong() {
+function returnLatLong(address) {
 
 	var geocoder = new google.maps.Geocoder();
 
