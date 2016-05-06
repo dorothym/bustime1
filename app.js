@@ -3,9 +3,8 @@
 var express = require('express'),
 	chalk = require('chalk'),
 	request = require('request'),
-	handlebars = require('handlebars'),
 	morgan = require('morgan'),
-	hbs = require('hbs');
+	path = require('path');
 
 var app = express();
 
@@ -13,16 +12,17 @@ var PORT = process.env.PORT || 1337;
 
 app.use(morgan('dev'));
 
-app.set('views', __dirname + '/views');
-
-app.set('view engine', 'hbs');
-
-// app.engine('html', swig.renderFile);
-
 app.use('/', require('./routes.js'));
+app.use(express.static(path.join(__dirname, './node_modules')));
+app.use(express.static(path.join(__dirname, './browser')));
+
 
 app.use(function (err, req, res, next) {
   res.status(err.status).send('<h1>Error</h1>', err.message);
+});
+
+app.get('/*', function (req, res) {
+    res.sendFile(__dirname + '/views/index.html');
 });
 
 app.use(function (req,res) {

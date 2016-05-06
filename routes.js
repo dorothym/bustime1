@@ -1,7 +1,6 @@
 var express = require('express'),
 	request = require('request'),
-	path = require('path'),
-	handlebars = require('handlebars');
+	path = require('path');
 
 var app = express();
 
