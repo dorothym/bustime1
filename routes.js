@@ -4,15 +4,15 @@ var express = require('express'),
 
 var app = express();
 
+app.use('/',express.static('static'));
+
 var MTA_BUSTIME_KEY = require(path.join(__dirname, './config.js')).MTA_BUSTIME_KEY;
 var GOOGLE_MAPS_API_KEY = require(path.join(__dirname, './config.js')).GOOGLE_MAPS_API_KEY;
 
 var pathToGet = 'http://bustime.mta.info/api/where/stops-for-location.json?lat=40.747716&lon=-73.98781&latSpan=0.005&lonSpan=0.005&key=' + MTA_BUSTIME_KEY;
 
-app.use('/',express.static('static'));
-
 app.get('/', function(req,res) {
-	var response = '<ul><li><a href=\"/stops3\">View example stops near test location</a></li></ul>'
+	var response = '<ul><li><a href=\"/stops3\">View example stops near test location</a></li><li><a href=\"/location\">Google Maps API test</a></li></ul>'
 	res.send(response)
 });
 
@@ -63,8 +63,6 @@ app.get('/stops3', function(req,res) {
 });
 
 
-
-
 app.get('/stops4', function (req,res) {
 
 	res.render('test', {
@@ -72,7 +70,6 @@ app.get('/stops4', function (req,res) {
 	});
 	
 });
-
 
 module.exports = app;
 

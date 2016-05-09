@@ -6,8 +6,7 @@ app.config(function ($urlRouterProvider, $locationProvider) {
 });
 
 app.controller('LocationCtrl', function($scope) {
-	$scope.foo="bar";
-	console.log("LocationCtrl is running. Foo is", $scope.foo)
+
 })
 
 app.config(function ($stateProvider) {
