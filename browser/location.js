@@ -6,8 +6,9 @@ app.config(function ($urlRouterProvider, $locationProvider) {
 });
 
 app.controller('LocationCtrl', function($scope, GeoFactory) {
-	$scope.getLatLong = GeoFactory.getLatLong;
+	$scope.getLatLon = GeoFactory.getLatLon;
 	$scope.httpTest = GeoFactory.httpTest;
+	$scope.getStops = GeoFactory.getStops;
 })
 
 app.config(function ($stateProvider) {
@@ -25,39 +26,43 @@ app.factory('GeoFactory', function ($http) {
 		map,
 		GOOGLE_MAPS_API_KEY = 'AIzaSyDDDW__-3OYqcUy9TH3YQGeA3d2rmFmmwk',
 		geocoder = new google.maps.Geocoder(),
-		GeoFactory = {};
+		GeoFactory = {},
+		myLatLon = {};
 
 	GeoFactory.httpTest = function() {
-		var data = {
-			"address" : "25 Broadway, New York, New York"
-		}
-		return $http.get('/api/geo', data)
-			.then(function (response) {
-				console.log("successful response", response)
+		var obj = { test: "hello world"}
+		$http.get('/api/geo', {params: obj})
+		.then(function (response) {
+			console.log("successful response", response)
 			}, function(err) {
 				console.error("Error:",err)
-			})
-		// return $http({
-		//   method: 'GET',
-		//   url: '/api/geo',
-		//   data: { address: '25 Broadway, New York, NY' }
-		// }).then(function (response) {
-		// 	console.log("successful response", response)
-		//   }, function (err) {
-		//   	console.error("Error:",err);
-		//   });
+		})
 	}
 
-	GeoFactory.getLatLong = function(address) {
+	GeoFactory.getLatLon = function(address) {
 		geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				console.log("Lat",results[0].geometry.location.lat());
-				console.log("Long",results[0].geometry.location.lng());
+				myLatLon.lat = results[0].geometry.location.lat();
+				myLatLon.lon = results[0].geometry.location.lng();
+				console.log("myLatLon is", myLatLon)
+				console.log("fetching stops")
+				return GeoFactory.getStops(myLatLon)
+
 			} else {
 				console.log("Geocode was not successful for the following reason: " + status);
 			}
 		});
 
+	}
+
+	GeoFactory.getStops = function(latLon) {
+		console.log("Inside GeoFactory.getStops. Passed latLon", latLon)
+		return $http.get('/api/stops', {params: latLon})
+		.then(function (response) {
+			console.log("successful response", response)
+			}, function(err) {
+				console.error("Error:",err)
+		})
 	}
 
 	return GeoFactory;
