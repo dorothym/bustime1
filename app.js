@@ -4,7 +4,8 @@ var express = require('express'),
 	chalk = require('chalk'),
 	request = require('request'),
 	morgan = require('morgan'),
-	path = require('path');
+	path = require('path'),
+	bodyParser = require('body-parser');
 
 var app = express();
 
@@ -15,6 +16,8 @@ app.use(morgan('dev'));
 app.use('/', require('./routes.js'));
 app.use(express.static(path.join(__dirname, './node_modules')));
 app.use(express.static(path.join(__dirname, './browser')));
+
+app.use(bodyParser.urlencoded({ extended: false }))
 
 
 app.use(function (err, req, res, next) {
