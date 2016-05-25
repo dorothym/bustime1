@@ -7,7 +7,6 @@ app.config(function ($urlRouterProvider, $locationProvider) {
 
 app.controller('LocationCtrl', function($scope, GeoFactory) {
 	$scope.getLatLon = GeoFactory.getLatLon;
-	$scope.httpTest = GeoFactory.httpTest;
 	$scope.getStops = GeoFactory.getStops;
 })
 
@@ -29,37 +28,24 @@ app.factory('GeoFactory', function ($http) {
 		GeoFactory = {},
 		myLatLon = {};
 
-	GeoFactory.httpTest = function() {
-		var obj = { test: "hello world"}
-		$http.get('/api/geo', {params: obj})
-		.then(function (response) {
-			console.log("successful response", response)
-			}, function(err) {
-				console.error("Error:",err)
-		})
-	}
-
 	GeoFactory.getLatLon = function(address) {
 		geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
 				myLatLon.lat = results[0].geometry.location.lat();
 				myLatLon.lon = results[0].geometry.location.lng();
-				console.log("myLatLon is", myLatLon)
-				console.log("fetching stops")
 				return GeoFactory.getStops(myLatLon)
 
 			} else {
-				console.log("Geocode was not successful for the following reason: " + status);
+				console.log("Geocode was not successful: " + status);
 			}
 		});
 
 	}
 
 	GeoFactory.getStops = function(latLon) {
-		console.log("Inside GeoFactory.getStops. Passed latLon", latLon)
 		return $http.get('/api/stops', {params: latLon})
 		.then(function (response) {
-			console.log("successful response", response)
+			console.log("successful response", response.data)
 			}, function(err) {
 				console.error("Error:",err)
 		})
