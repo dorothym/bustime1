@@ -13,7 +13,7 @@ app.use('/',express.static('static'));
 var MTA_BUSTIME_KEY = require(path.join(__dirname, './config.js')).MTA_BUSTIME_KEY;
 var GOOGLE_MAPS_API_KEY = require(path.join(__dirname, './config.js')).GOOGLE_MAPS_API_KEY;
 
-var basePath = 'http://bustime.mta.info/api/where/';
+var basePath = 'http://bustime.mta.info/api/';
 
 app.get('/', function(req,res) {
 	var response = '<ul><li><a href=\"/location\">Get all stops near a location</a></li></ul>'
@@ -33,7 +33,7 @@ app.get('/api/stops', function(req,res) {
 
 	var strData, 
 		output,
-		pathToGet = basePath + 'stops-for-location.json?radius=200&key=' + MTA_BUSTIME_KEY + "&lat=" + req.query.lat + "&lon=" + req.query.lon,
+		pathToGet = basePath + 'where/stops-for-location.json?radius=200&key=' + MTA_BUSTIME_KEY + "&lat=" + req.query.lat + "&lon=" + req.query.lon,
 		stops = [],
 		numStops = 0;
 
@@ -48,11 +48,48 @@ app.get('/api/stops', function(req,res) {
 			for(var i = 0; i < numStops; i++) {
 				stops.push(strData.data.stops[i].code);
 			}
-			console.log("STOPS:",stops);
+			// console.log("STOPS:",stops);
 			res.json(stops)
 		}
 	});
 });
+
+// get VEHICLES at stop X
+app.get('/api/vehicles', function(req,res) {
+	// console.log("GET api/vehicles for", req.query.stop)
+
+	var pathToGet = basePath + "siri/stop-monitoring.json?key=" + MTA_BUSTIME_KEY + "&OperatorRef=MTA&MonitoringRef=" + req.query.stop,
+		strData, 
+		numVehicles = 0,
+		vehicles = [],
+		currentVehicle;
+
+	console.log('pathToGet', pathToGet);
+
+	request(pathToGet, function (error, response, body) {
+		if(error){
+			// console.error("request error", chalk.red(error))
+		} else {
+			strData = JSON.parse(body)
+
+			// console.log("vref", strData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit[0].MonitoredVehicleJourney.VehicleRef)
+
+			numVehicles = strData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit.length;
+
+			for(var i = 0; i < numVehicles; i++) {
+
+				currentVehicle = strData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit[i].MonitoredVehicleJourney.VehicleRef;
+				// console.log("currentVehicle is", currentVehicle);
+
+				vehicles.push(currentVehicle); 
+			}
+
+		}
+		// console.log("VEHICLES", vehicles);
+		res.json(vehicles);
+	});
+});
+
 
 // get lines at stop X
 app.get('/api/lines', function(req,res) {
@@ -81,7 +118,7 @@ app.get('/api/lines', function(req,res) {
 			}
 
 		}
-		console.log("ROUTES", routes);
+		// console.log("ROUTES", routes);
 		res.json(routes);
 	});
 });
