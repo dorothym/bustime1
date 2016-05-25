@@ -9,7 +9,7 @@ app.use('/',express.static('static'));
 var MTA_BUSTIME_KEY = require(path.join(__dirname, './config.js')).MTA_BUSTIME_KEY;
 var GOOGLE_MAPS_API_KEY = require(path.join(__dirname, './config.js')).GOOGLE_MAPS_API_KEY;
 
-var pathToGet = 'http://bustime.mta.info/api/where/stops-for-location.json?lat=40.747716&lon=-73.98781&latSpan=0.005&lonSpan=0.005&key=' + MTA_BUSTIME_KEY;
+var testPath = 'http://bustime.mta.info/api/where/stops-for-location.json?lat=40.747716&lon=-73.98781&latSpan=0.005&lonSpan=0.005&key=' + MTA_BUSTIME_KEY;
 
 app.get('/', function(req,res) {
 	var response = '<ul><li><a href=\"/stops3\">View example stops near test location</a></li><li><a href=\"/location\">Google Maps API test</a></li></ul>'
@@ -19,7 +19,7 @@ app.get('/', function(req,res) {
 app.get('/stops1', function(req,res) {
 
 	request
-		.get(pathToGet)
+		.get(testPath)
 		.on('error', function(err) {
 			console.log(chalk.red(err))
 		})
@@ -28,7 +28,7 @@ app.get('/stops1', function(req,res) {
 });
 
 app.get('/stops2', function(req,res) {
-	request(pathToGet, function (error, response, body) {
+	request(testPath, function (error, response, body) {
 		var strData = "";
 		if(error){
 			console.error(chalk.red(error))
@@ -44,7 +44,7 @@ app.get('/stops3', function(req,res) {
 
 	var stopInfoArrayShort = [];
 
-	request(pathToGet, function (error, response, body) {
+	request(testPath, function (error, response, body) {
 		var strData, output;
 		if(error){
 			console.error(chalk.red(error))

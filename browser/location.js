@@ -5,8 +5,8 @@ app.config(function ($urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('/');
 });
 
-app.controller('LocationCtrl', function($scope) {
-
+app.controller('LocationCtrl', function($scope, GeoFactory) {
+	$scope.getLatLong = GeoFactory.getLatLong;
 })
 
 app.config(function ($stateProvider) {
@@ -16,4 +16,27 @@ app.config(function ($stateProvider) {
         controller: 'LocationCtrl'
     });
 
+});
+
+app.factory('GeoFactory', function () {
+
+	var geocoder, 
+		map,
+		GOOGLE_MAPS_API_KEY = 'AIzaSyDDDW__-3OYqcUy9TH3YQGeA3d2rmFmmwk',
+		geocoder = new google.maps.Geocoder(),
+		GeoFactory = {};
+
+	GeoFactory.getLatLong = function(address) {
+		geocoder.geocode( { 'address': address}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				console.log("Lat",results[0].geometry.location.lat());
+				console.log("Long",results[0].geometry.location.lng());
+			} else {
+				console.log("Geocode was not successful for the following reason: " + status);
+			}
+		});
+
+	}
+
+	return GeoFactory;
 });

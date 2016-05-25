@@ -1,6 +1,5 @@
-<h2>Clicking button will console log lat/long for 25 Broadway</h2>
+<h2>Enter address to console log latitude and longitude</h2>
 <form>
-<input type="text" name="address" id="address" />
-<button onclick="returnLatLong('25 Broadway, New York, New York')" type="submit" value="Submit">Get LatLng</button>
-
+<input ng-model="latlong" type="text" name="address2" id="address2" />
+<button ng-click="getLatLong(latlong)">Get LatLng for your address</button>
 </form>
