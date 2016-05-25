@@ -1,0 +1,15 @@
+// http://bustime.mta.info/api/where/stop/MTA_302219.json?key=KEY
+data.routes[0].id
+
+
+{"code":200,"currentTime":1464191638643,
+
+"data":{"code":"302219","direction":"NE","id":"MTA_302219","lat":40.639883,"locationType":0,"lon":-73.967187,"name":"CORTELYOU RD / WESTMINSTER RD",
+
+"routes":[
+{"agency":{"disclaimer":"","id":"MTABC","lang":"EN","name":"MTA Bus Company","phone":"","privateService":false,"timezone":"America/New_York","url":"http://www.mta.info"}
+,"color":"FAA61A","description":"","id":"MTABC_B103","longName":"Canarsie - Downtown Brooklyn Ltd","shortName":"B103","textColor":"FFFFFF","type":3,"url":"http://web.mta.info/busco/schedules/b103cur.pdf"},
+{"agency":{"disclaimer":"","id":"MTABC","lang":"EN","name":"MTA Bus Company","phone":"","privateService":false,"timezone":"America/New_York","url":"http://www.mta.info"},"color":"00933C","description":"Via Cortelyou Rd / Ave K / E 66Th St","id":"MTABC_BM1","longName":"Mill Basin - Downtown/Midtown","shortName":"BM1","textColor":"FFFFFF","type":3,"url":"http://web.mta.info/busco/schedules/bm001cur.pdf"},
+{"agency":{"disclaimer":"","id":"MTABC","lang":"EN","name":"MTA Bus Company","phone":"","privateService":false,"timezone":"America/New_York","url":"http://www.mta.info"},"color":"00933C","description":"","id":"MTABC_BM2","longName":"Canarsie/Spring Creek - Downtown/Midtown","shortName":"BM2","textColor":"FFFFFF","type":3,"url":"http://web.mta.info/busco/schedules/bm002cur.pdf"},
+{"agency":{"disclaimer":"","id":"MTABC","lang":"EN","name":"MTA Bus Company","phone":"","privateService":false,"timezone":"America/New_York","url":"http://www.mta.info"},"color":"00933C","description":"Via Emmons Av / Ocean Av / Cortelyou Rd","id":"MTABC_BM3","longName":"Sheepshead Bay - Downtown/Midtown","shortName":"BM3","textColor":"FFFFFF","type":3,"url":"http://web.mta.info/busco/schedules/bm003cur.pdf"},
+{"agency":{"disclaimer":"","id":"MTABC","lang":"EN","name":"MTA Bus Company","phone":"","privateService":false,"timezone":"America/New_York","url":"http://www.mta.info"},"color":"00933C","description":"Via Gerritsen Av / Nostrand Av / Ocean Av","id":"MTABC_BM4","longName":"Gerritsen Beach - Downtown/Midtown","shortName":"BM4","textColor":"FFFFFF","type":3,"url":"http://web.mta.info/busco/schedules/bm004cur.pdf"}],"wheelchairBoarding":"UNKNOWN"},"text":"OK","version":1}

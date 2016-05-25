@@ -27,6 +27,7 @@ app.factory('GeoFactory', function ($http) {
 		geocoder = new google.maps.Geocoder(),
 		GeoFactory = {},
 		myLatLon = {};
+		
 
 	GeoFactory.getLatLon = function(address) {
 		geocoder.geocode( { 'address': address}, function(results, status) {
@@ -43,11 +44,26 @@ app.factory('GeoFactory', function ($http) {
 	}
 
 	GeoFactory.getStops = function(latLon) {
+		console.log("GeoFactory getStops on", latLon);
 		return $http.get('/api/stops', {params: latLon})
 		.then(function (response) {
-			console.log("successful response", response.data)
+			console.log("successful response", response.data);
+			GeoFactory.getLines(response.data)
 			}, function(err) {
 				console.error("Error:",err)
+		})
+	};
+
+	GeoFactory.getLines = function(stopArray) {
+		console.log("GeoFactory getLines on", stopArray)
+
+		return $http.get('/api/lines', {
+			params: {stop: stopArray[0]}
+		})
+		.then(function(response) {
+			console.log("successful response", response.data)
+		}, function (err) {
+			console.error("Error:", err)
 		})
 	}
 

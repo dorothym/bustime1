@@ -13,7 +13,7 @@ app.use('/',express.static('static'));
 var MTA_BUSTIME_KEY = require(path.join(__dirname, './config.js')).MTA_BUSTIME_KEY;
 var GOOGLE_MAPS_API_KEY = require(path.join(__dirname, './config.js')).GOOGLE_MAPS_API_KEY;
 
-var pathStub = 'http://bustime.mta.info/api/where/stops-for-location.json?radius=200&key=' + MTA_BUSTIME_KEY;
+var basePath = 'http://bustime.mta.info/api/where/';
 
 app.get('/', function(req,res) {
 	var response = '<ul><li><a href=\"/location\">Get all stops near a location</a></li></ul>'
@@ -29,25 +29,60 @@ app.get('/api/geo', function(req,res, next) {
 
 app.get('/api/stops', function(req,res) {
 
-	var stopInfoArrayShort = [];
+	console.log("GET api/stops", req.query)
 
-	pathStub += ("&lat=" + req.query.lat + "&lon=" + req.query.lon)
+	var strData, 
+		output,
+		pathToGet = basePath + 'stops-for-location.json?radius=200&key=' + MTA_BUSTIME_KEY + "&lat=" + req.query.lat + "&lon=" + req.query.lon,
+		stops = [],
+		numStops = 0;
 
-	request(pathStub, function (error, response, body) {
-		var strData, output;
+	console.log("pathToGet:",pathToGet)
+
+	request(pathToGet, function (error, response, body) {
 		if(error){
-			console.error(chalk.red(error))
+			console.error(chalk.red("REQUEST ERROR:",error))
+		} else {
+			strData = JSON.parse(body);
+			numStops = strData.data.stops.length;
+			for(var i = 0; i < numStops; i++) {
+				stops.push(strData.data.stops[i].code);
+			}
+			console.log("STOPS:",stops);
+			res.json(stops)
+		}
+	});
+});
+
+// get lines at stop X
+app.get('/api/lines', function(req,res) {
+	console.log("GET api/lines", req.query.stop)
+
+	var stopID = "MTA_" + req.query.stop,
+		pathToGet = basePath + "stop/" + stopID + ".json?key=" + MTA_BUSTIME_KEY,
+		strData, 
+		output, 
+		shortRouteInfo = {},
+		numLines = 0,
+		routes = [];
+
+	console.log('pathToGet', pathToGet);
+
+	request(pathToGet, function (error, response, body) {
+		if(error){
+			console.error("request error", chalk.red(error))
 		} else {
 			strData = JSON.parse(body)
-			output = strData.data.stops.map(function(longStopInfo) {
-				var shortStopInfo = {};
-				shortStopInfo.code = longStopInfo.code;
-				shortStopInfo.name = longStopInfo.name;
-				return shortStopInfo;
-			})
-			console.log(output);
-			res.send(output)
+			// console.log("LINES", strData.data.routes)
+
+			numLines = strData.data.routes.length;
+			for(var i = 0; i < numLines; i++) {
+				routes.push(strData.data.routes[i].id);
+			}
+
 		}
+		console.log("ROUTES", routes);
+		res.json(routes);
 	});
 });
 
