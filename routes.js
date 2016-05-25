@@ -63,13 +63,12 @@ app.get('/stops3', function(req,res) {
 });
 
 
-app.get('/stops4', function (req,res) {
+/* api */
 
-	res.render('test', {
-		stops: {code: '123', name: 'abc'}
-	});
-	
-});
+app.get('/api/geo', function(req,res, next) {
+	console.log("api/geo get", req.body);
+	res.send("Made connection")
+})
 
 module.exports = app;
 
