@@ -12,3 +12,24 @@ This application is not deployed yet. To run it locally, you must [request a Bus
 export MTA_BUSTIME_KEY='[your key here]'
 ```
 
+## Current functionality:
+At /location, user enters an address and clicks getLatLon.
+
+Application console logs the following:
+* Latitude and longitude for that address
+* MTA bus stops within 200 meters of that latitude & longitude
+* Bus routes serving the first bus stop in the array 
+
+### TBD:
+
+* Console log ALL bus routes serving ALL bus stops in the array
+
+* for each route/line (or stop?), need to make separate call to get nearby buses. 
+
+** _example by stop:_
+http://bustime.mta.info/api/siri/stop-monitoring.json?key=[key]&OperatorRef=MTA&MonitoringRef=400324
+
+** _example by line:_
+http://bustime.mta.info/api/siri/vehicle-monitoring.json?&VehicleRef=339&key=[key]&OperatorRef=MTA
+
+
