@@ -37,7 +37,7 @@ app.get('/api/stops', function(req,res) {
 		stops = [],
 		numStops = 0;
 
-	console.log("pathToGet:",pathToGet)
+	console.log("GET STOPS NR LOCATION pathToGet:",pathToGet)
 
 	request(pathToGet, function (error, response, body) {
 		if(error){
@@ -56,7 +56,7 @@ app.get('/api/stops', function(req,res) {
 
 // get VEHICLES at stop X
 app.get('/api/vehicles', function(req,res) {
-	// console.log("GET api/vehicles for", req.query.stop)
+	console.log("GET api/vehicles for stop", req.query.stop)
 
 	var pathToGet = basePath + "siri/stop-monitoring.json?key=" + MTA_BUSTIME_KEY + "&OperatorRef=MTA&MonitoringRef=" + req.query.stop,
 		strData, 
@@ -64,9 +64,10 @@ app.get('/api/vehicles', function(req,res) {
 		vehicles = [],
 		currentVehicle;
 
-	console.log('pathToGet', pathToGet);
+	console.log('GET VEHICLES NR STOP pathToGet', pathToGet);
 
 	request(pathToGet, function (error, response, body) {
+		console.log("making request to SIRI")
 		if(error){
 			// console.error("request error", chalk.red(error))
 		} else {
@@ -85,7 +86,7 @@ app.get('/api/vehicles', function(req,res) {
 			}
 
 		}
-		// console.log("VEHICLES", vehicles);
+		console.log("VEHICLES", vehicles);
 		res.json(vehicles);
 	});
 });

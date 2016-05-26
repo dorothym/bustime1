@@ -8,6 +8,7 @@ app.config(function ($urlRouterProvider, $locationProvider) {
 app.controller('LocationCtrl', function($scope, GeoFactory) {
 	$scope.getLatLon = GeoFactory.getLatLon;
 	$scope.getStops = GeoFactory.getStops;
+	$scope.getVehicles = GeoFactory.getVehicles;
 })
 
 app.config(function ($stateProvider) {
@@ -19,7 +20,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.factory('GeoFactory', function ($http) {
+app.factory('GeoFactory', function ($http, $q) {
 
 	var geocoder, 
 		map,
@@ -55,6 +56,7 @@ app.factory('GeoFactory', function ($http) {
 		})
 	};
 
+	// this is not currently in use - might delete later 
 	GeoFactory.getLines = function(stopArray) {
 		console.log("GeoFactory getLines on", stopArray)
 
@@ -70,28 +72,33 @@ app.factory('GeoFactory', function ($http) {
 	};
 
 	GeoFactory.getVehicles = function(stopArray) {
-		console.log("GeoFactory getVehicles on",stopArray);
+		// console.log("GeoFactory getVehicles on",stopArray);
 
-		// the array of promises should be built here
-		// then we'll insert into $q.all
-		// https://docs.angularjs.org/api/ng/service/$q
+		var allVehicles = [],
+			promiseArray = [],
+			tempArray = [],
+			stopArrayLength = stopArray.length,
+			i;
 
-		/* EXAMPLE: http://fdietz.github.io/recipes-with-angular-js/consuming-external-services/deferred-and-promise.html
-		var first  = $http.get("/app/data/first.json"),
-		    second = $http.get("/app/data/second.json"),
-		    third  = $http.get("/app/data/third.json");
+		for (i = 0; i < stopArrayLength; i++ ) {
+			promiseArray.push($http.get('/api/vehicles', {
+				params: {
+					stop: stopArray[i]
+				}
+			}))
+		}
 
-		$q.all([first, second, third])
-		.then(function(result) {
-		  var tmp = [];
-		  angular.forEach(result, function(response) {
-		    tmp.push(response.data);
-		  });
-		  return tmp;
-		}).then(function(tmpResult) {
-		  $scope.combinedResult = tmpResult.join(", ");
-		});
-		*/
+		return $q.all(promiseArray)
+		.then(function(vehicleArray) {
+			// console.log("****** FINAL RESULT front-end vehicles",result)
+			angular.forEach(vehicleArray, function(item) {
+				// console.log("item.data",item.data)
+				allVehicles = allVehicles.concat(item.data);
+				// console.log("allVehicles is now",allVehicles,"and tempArray is", tempArray)
+			});
+			console.log("Front end final result allVehicles", allVehicles);
+			return allVehicles; // not sure if this will work
+		}, function(err) {console.error("Error retrieving monitored vehicles",err)})
 
 		/* ANOTHER EXAMPLE: http://stackoverflow.com/questions/25570618/multiple-http-with-promise-using-factory-angular
 			factory("getDefaults", function($http, $q) {
@@ -105,13 +112,8 @@ app.factory('GeoFactory', function ($http) {
 			});
 		*/
 
+		// stop: stopArray[]
 
-		return $http.get('/api/vehicles', {params: { stop: stopArray[0]}})
-		.then(function(response) {
-			console.log("Successfully got VEHICLE data", response.data)
-		}, function (err) {
-			console.error("Error:", err)			
-		})
 	}
 
 	return GeoFactory;
